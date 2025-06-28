@@ -2,7 +2,8 @@ name: Build APK
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -10,27 +11,49 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
     - name: Install dependencies
       run: |
         sudo apt update
-        sudo apt install -y python3-pip zip unzip openjdk-17-jdk
+        sudo apt install -y \
+          python3-pip \
+          zip unzip \
+          openjdk-17-jdk \
+          git \
+          libffi-dev \
+          libssl-dev \
+          libsqlite3-dev \
+          zlib1g-dev \
+          libncurses5-dev \
+          libncursesw5-dev \
+          libreadline-dev \
+          libgdbm-dev \
+          libbz2-dev \
+          liblzma-dev \
+          build-essential \
+          autoconf \
+          cmake \
+          pkg-config \
+          libtool \
+          ninja-build
+
         python3 -m pip install --upgrade pip
         pip install cython buildozer
 
     - name: Build APK
+      working-directory: ./app
       run: |
         buildozer android debug
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: docwise-app
-        path: bin/*.apk
+        name: docwise-app-debug.apk
+        path: ./app/bin/*.apk
