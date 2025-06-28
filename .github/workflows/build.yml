@@ -1,41 +1,45 @@
-name: Build Android APK
+name: Build Kivy Android APK
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   workflow_dispatch:
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
+    - name: Checkout repository
       uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: 3.11
+        python-version: '3.11'
 
-    - name: Install Buildozer and Dependencies
+    - name: Install system dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install Cython==0.29.36 buildozer
+        sudo apt update
+        sudo apt install -y git zip unzip openjdk-17-jdk python3-pip python3-setuptools python3-wheel python3-venv libgl1-mesa-dev
 
-    - name: Cache Buildozer (SDK/NDK)
-      uses: actions/cache@v4
-      with:
-        path: ~/.buildozer
-        key: ${{ runner.os }}-buildozer-cache-v1
+    - name: Install Cython, Buildozer & dependencies
+      run: |
+        python3 -m pip install --upgrade pip
+        pip install cython buildozer
 
-    - name: Build APK
+    - name: Accept Android SDK licenses
+      run: |
+        yes | sdkmanager --licenses || true
+      env:
+        JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
+
+    - name: Build APK with Buildozer
       run: |
         buildozer android debug
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: docwise-app-debug-apk
-        path: docwise2/bin/*.apk  # 🔁 Make sure the `bin` directory is correct
+        name: docwise-app-debug
+        path: ./bin/*.apk
