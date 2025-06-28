@@ -19,7 +19,6 @@ android.permissions = INTERNET,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE
 android.api = 31
 android.minapi = 21
 android.ndk = 25b
-android.ndk_path = /home/himanshukhale/.buildozer/android/platform/android-ndk-r25b
 android.ndk_api = 21
 android.archs = armeabi-v7a
 
