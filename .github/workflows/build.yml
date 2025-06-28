@@ -32,7 +32,6 @@ jobs:
 
     - name: Build APK
       run: |
-        cd docwise2  # 🔁 Change this if your `buildozer.spec` is in a different folder
         buildozer android debug
 
     - name: Upload APK
