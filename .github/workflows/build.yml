@@ -18,7 +18,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: 📦 Install build dependencies
+      - name: 📦 Install system dependencies
         run: |
           sudo apt update
           sudo apt install -y \
@@ -28,28 +28,17 @@ jobs:
             libjpeg-dev libfreetype6-dev libgl1-mesa-dev libgles2-mesa-dev \
             libmtdev-dev libxtst-dev libx11-dev libxrandr-dev libxinerama-dev \
             libxi-dev libsmpeg-dev libsqlite3-dev libssl-dev
-          python -m pip install --upgrade pip
+          python3 -m pip install --upgrade pip
           pip install --user buildozer cython
-
-      - name: 🔧 Accept SDK licenses and install Build Tools
-        run: |
-          mkdir -p ~/.android
-          echo "### Accept all SDK licenses" > ~/.android/repositories.cfg
-          yes | sdkmanager --sdk_root=$ANDROID_SDK_ROOT --licenses
-          sdkmanager "build-tools;34.0.0" "platforms;android-31"
-        env:
-          ANDROID_SDK_ROOT: /home/runner/.buildozer/android/platform/android-sdk
-          JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
 
       - name: 🛠️ Build APK
         run: |
           buildozer android debug
         env:
-          ANDROID_SDK_ROOT: /home/runner/.buildozer/android/platform/android-sdk
           JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
 
       - name: 📤 Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: docwise-app-debug-apk
-          path: bin/*.apk
+          name: docwise-debug-apk
+          path: app/bin/*.apk
