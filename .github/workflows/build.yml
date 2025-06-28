@@ -1,8 +1,9 @@
-name: Build APK
+name: Build Android APK
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -10,47 +11,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: 📥 Checkout repo
+    - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: 🐍 Set up Python 3.11
+    - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11'
+        python-version: 3.11
 
-    - name: 🔧 Install dependencies
+    - name: Install Buildozer and Dependencies
       run: |
-        sudo apt update
-        sudo apt install -y \
-          python3-pip \
-          zip unzip \
-          openjdk-17-jdk \
-          git \
-          libffi-dev \
-          libssl-dev \
-          libsqlite3-dev \
-          zlib1g-dev \
-          libncurses5-dev \
-          libncursesw5-dev \
-          libreadline-dev \
-          libgdbm-dev \
-          libbz2-dev \
-          liblzma-dev \
-          build-essential \
-          autoconf \
-          cmake \
-          pkg-config \
-          libtool \
-          ninja-build
+        python -m pip install --upgrade pip
+        pip install Cython==0.29.36 buildozer
 
-        python3 -m pip install --upgrade pip
-        pip install cython buildozer
+    - name: Cache Buildozer (SDK/NDK)
+      uses: actions/cache@v4
+      with:
+        path: ~/.buildozer
+        key: ${{ runner.os }}-buildozer-cache-v1
 
-    - name: ⚙️ Build APK
-      run: buildozer android debug
+    - name: Build APK
+      run: |
+        cd docwise2  # 🔁 Change this if your `buildozer.spec` is in a different folder
+        buildozer android debug
 
-    - name: 📦 Upload APK
+    - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: docwise-app-debug.apk
-        path: bin/*.apk
+        name: docwise-app-debug-apk
+        path: docwise2/bin/*.apk  # 🔁 Make sure the `bin` directory is correct
