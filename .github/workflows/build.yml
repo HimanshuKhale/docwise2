@@ -20,15 +20,16 @@ jobs:
 
       - name: 🛠️ Install System Dependencies
         run: |
-          sudo apt update
-          sudo apt install -y \
+            sudo apt update
+            sudo apt install -y \
             build-essential zip unzip openjdk-17-jdk \
             python3-pip python3-setuptools python3-venv \
-            libffi-dev libssl-dev libjpeg-dev \
-            libfreetype6-dev libgl1-mesa-dev libgles2-mesa-dev \
+            libffi-dev libtool automake autoconf m4 \
+            libjpeg-dev libfreetype6-dev libgl1-mesa-dev libgles2-mesa-dev \
             libgstreamer1.0-dev gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
             libmtdev-dev libinput-dev libx11-dev libxext-dev libxi-dev \
             libsqlite3-dev zlib1g-dev cython3
+
 
       - name: 📦 Install Android SDK Command Line Tools
         run: |
