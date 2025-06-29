@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout Repository
+      - name: 📥 Checkout code
         uses: actions/checkout@v3
 
       - name: 🐍 Set up Python
@@ -18,38 +18,25 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: 🛠️ Install System Dependencies
+      - name: 🛠️ Install dependencies
         run: |
           sudo apt update
           sudo apt install -y \
+            build-essential zip unzip openjdk-17-jdk \
             python3-pip python3-setuptools python3-venv \
-            libffi-dev libssl-dev build-essential \
-            zip unzip openjdk-17-jdk \
-            libncurses-dev libsqlite3-dev zlib1g-dev \
-            libjpeg-dev libfreetype6-dev libgl1-mesa-dev \
-            libgles2-mesa-dev libgstreamer1.0-dev \
-            gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
-            libmtdev-dev libinput-dev libx11-dev \
-            libxext-dev libxi-dev cython3 git
+            libffi-dev libssl-dev libjpeg-dev \
+            libfreetype6-dev libgl1-mesa-dev libgles2-mesa-dev \
+            libgstreamer1.0-dev gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
+            libmtdev-dev libinput-dev libx11-dev libxext-dev libxi-dev \
+            libsqlite3-dev zlib1g-dev cython3
 
-      - name: 🔧 Set environment variables
-        run: |
-          echo "export JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64" >> $GITHUB_ENV
-          echo "export PATH=$PATH:$JAVA_HOME/bin" >> $GITHUB_ENV
-
-      - name: 📦 Install Python Packages
+      - name: 📦 Install Buildozer
         run: |
           python -m pip install --upgrade pip
-          pip install cython buildozer
+          pip install buildozer
 
-      - name: 📥 Install Android SDK components
-        run: |
-          yes | sdkmanager --licenses
-          sdkmanager "platform-tools" "platforms;android-31" "build-tools;31.0.0"
-
-      - name: 📱 Build APK
-        run: |
-          buildozer android debug
+      - name: ⚙️ Build APK
+        run: buildozer android debug
 
       - name: 📤 Upload APK
         uses: actions/upload-artifact@v4
