@@ -8,17 +8,21 @@ source.include_exts = py,png,jpg,kv,atlas
 include_patterns = assets/*
 
 version = 0.1
-requirements = python3,kivy==2.2.1,kivymd==1.1.1,requests,plyer,certifi,idna,chardet,urllib3
+requirements = python3,kivy,materialyoucolor,exceptiongroup,asyncgui,asynckivy,requests,plyer,certifi,idna,chardet,urllib3,https://github.com/kivymd/KivyMD/archive/master.zip
+
+#presplash.filename = %(source.dir)s/Splash.png
+#icon.filename = %(source.dir)s/Icon.png
 
 orientation = portrait
 
 android.permissions = INTERNET,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE
-
+osx.kivy_version = 2.3.0
+android.accept_sdk_license = True
 android.api = 31
 android.minapi = 21
 android.ndk = 25b
 android.ndk_api = 21
-android.archs = armeabi-v7a
+android.archs = arm64-v8a, armeabi-v7a
 
 # Let Buildozer auto-manage SDK/NDK/platform tools
 android.sdk = 
