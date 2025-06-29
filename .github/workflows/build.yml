@@ -45,7 +45,7 @@ jobs:
             libx11-dev \
             libxext-dev \
             libxi-dev \
-            cython \
+            cython3 \
             git
 
       - name: 🐍 Install Python Dependencies
