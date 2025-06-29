@@ -8,7 +8,7 @@ source.include_exts = py,png,jpg,kv,atlas
 include_patterns = assets/*
 
 version = 0.1
-requirements = python3,kivy,materialyoucolor,exceptiongroup,asyncgui,asynckivy,requests,plyer,certifi,idna,chardet,urllib3,https://github.com/kivymd/KivyMD/archive/master.zip
+requirements = python3,kivy,materialyoucolor,requests,plyer,certifi,idna,chardet,urllib3,https://github.com/kivymd/KivyMD/archive/master.zip
 
 #presplash.filename = %(source.dir)s/Splash.png
 #icon.filename = %(source.dir)s/Icon.png
